@@ -13,3 +13,18 @@ entity_df = pd.DataFrame.from_dict({
 })
 
 entity_df.head()
+
+from feast import FeatureStore
+
+store = FeatureStore(repo_path=".")
+
+training_df = store.get_historical_features(
+    entity_df=entity_df, 
+    feature_refs = [
+        'driver_hourly_stats:conv_rate',
+        'driver_hourly_stats:acc_rate',
+        'driver_hourly_stats:avg_daily_trips'
+    ],
+).to_df()
+
+training_df.head()
